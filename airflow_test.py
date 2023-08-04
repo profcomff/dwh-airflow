@@ -36,19 +36,3 @@ def check_vds_balance():
 
 
 airflow_tests = check_vds_balance()
-
-with DAG(
-        dag_id="git_pull_tests",
-        start_date=datetime(2022, 1, 1),
-        schedule_interval=timedelta(minutes=5),
-        catchup=False,
-        tags=["infra"],
-        default_args={"owner": "infra", "retries": 3, "retry_delay": timedelta(minutes=5)},
-) as dag:
-    BashOperator(
-        task_id="git_update",
-        bash_command=f"cd /root/airflow/dags/airflow_test "
-                     f"&& git reset --hard"
-                     f"&& git submodule update --init --recursive ",
-    )
-
