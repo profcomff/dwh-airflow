@@ -8,7 +8,6 @@ services:
         condition: on-failure
     environment:
       - AIRFLOW_ENV=PRODUCITON
-      - AIRFLOW__CORE__LOAD_EXAMPLES='false'
     volumes:
       - ./airflow:/root/airflow
     networks:
