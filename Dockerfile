@@ -11,10 +11,10 @@ RUN python3 -m pip install --no-cache-dir -r ./requirements.txt
 
 # Git block
 COPY dags.py /root/airflow/dags/
-COPY airflow_test.py /root/airflow/dags/
 RUN mkdir -p /root/airflow/dags/dwh-pipelines
 RUN mkdir -p /root/airflow/dags/airflow_test
 RUN git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git /root/airflow/dags/dwh-pipelines
+RUN git clone --recurse-submodules -b main https://github.com/Men-of-Honest-Fate/airflow_test.git /root/airflow/dags/airflow_test
 
 RUN export PYTHONPATH=/root/airflow/dags/dwh-pipelines:${PYTHONPATH}
 
