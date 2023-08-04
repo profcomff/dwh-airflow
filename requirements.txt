@@ -1,0 +1,12 @@
+requests
+pandas
+beautifulsoup4
+gunicorn
+cryptography
+celery
+flower
+psycopg2_binary
+apache-airflow
+apache-airflow-providers-common-sql
+apache-airflow-providers-postgres
+google-api-python-client

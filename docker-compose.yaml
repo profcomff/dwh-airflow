@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  airflow-prod:
+    build: .
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      - AIRFLOW_ENV=PRODUCITON
+      - AIRFLOW__CORE__LOAD_EXAMPLES='false'
+    volumes:
+      - ./airflow:/root/airflow
+    networks:
+      web:
+        aliases:
+          - com_profcomff_airflow
+
+volumes:
+  airflow-libs-prod:
+
+networks:
+  web:
+    external: true
+    name: web
