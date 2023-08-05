@@ -17,6 +17,7 @@ RUN git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipe
 RUN git clone --recurse-submodules -b main https://github.com/Men-of-Honest-Fate/airflow_test.git /root/airflow/dags/airflow_test
 
 RUN export PYTHONPATH=/root/airflow/dags/dwh-pipelines:${PYTHONPATH}
+RUN export PYTHONPATH=/root/airflow/dags/airflow_test:${PYTHONPATH}
 
 # Airflow block
 RUN airflow db init
