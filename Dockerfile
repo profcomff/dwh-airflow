@@ -1,6 +1,7 @@
 FROM python:3.11
 ENV AIRFLOW__CORE__LOAD_EXAMPLES=false
 ENV DEBIAN_FRONTEND=noninteractive
+ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor
 
 # Linux block
 COPY requirements.txt .
