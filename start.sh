@@ -5,10 +5,6 @@
     || mkdir -p /root/airflow/dags/dwh-pipelines \
     && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git /root/airflow/dags/dwh-pipelines
 
-[[ -d /root/airflow/dags/airflow_test ]] \
-    || mkdir -p /root/airflow/dags/airflow_test \
-    && git clone --recurse-submodules -b main https://github.com/Men-of-Honest-Fate/airflow_test.git /root/airflow/dags/airflow_test
-
 # Инициализируй БД или проведи миграции для обновления
 airflow db init
 
