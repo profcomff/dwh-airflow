@@ -1,5 +1,6 @@
 name: Build, publish and deploy docker
 
+
 on:
   push:
     branches: ['main']
@@ -14,7 +15,7 @@ env:
 jobs:
   build-and-push-image:
     name: Build and push
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux]
     permissions:
       contents: read
       packages: write
@@ -29,6 +30,9 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Docker Setup Buildx
+        uses: docker/setup-buildx-action@v2.9.1
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
@@ -59,23 +63,20 @@ jobs:
       url: https://api.test.profcomff.com/dwh_airflow
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow_test
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow_user:12345@192.168.1.6:5432/airflow_db
     permissions:
       packages: read
 
     steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Pull new version
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
-
-#      - name: Migrate DB
-#        run: |
-#          docker run \
-#            --rm \
-#            --network=web \
-#            --env DB_DSN=${{ secrets.DB_DSN }} \
-#            --name ${{ env.CONTAINER_NAME }}_migration \
-#            --workdir="/" \
-#            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
-#            alembic upgrade head
 
       - name: Run new version
         id: run_test
@@ -88,9 +89,9 @@ jobs:
             --env DB_DSN='${{ secrets.DB_DSN }}' \
             --env ROOT_PATH='/dwh_airflow' \
             --env AUTH_URL='https://api.test.profcomff.com/auth' \
-            --env GUNICORN_CMD_ARGS='--log-config logging_test.conf' \
             --name ${{ env.CONTAINER_NAME }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
+          airflow db init \
 
   deploy-production:
     name: Deploy Production
@@ -102,6 +103,7 @@ jobs:
       url: https://api.profcomff.com/dwh_airflow
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow_user:12345@192.168.1.6:5432/airflow_db
     permissions:
       packages: read
 
@@ -109,28 +111,17 @@ jobs:
       - name: Pull new version
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-#      - name: Migrate DB
-#        run: |
-#          docker run \
-#            --rm \
-#            --network=web \
-#            --env DB_DSN=${{ secrets.DB_DSN }} \
-#            --name ${{ env.CONTAINER_NAME }}_migration \
-#            --workdir="/" \
-#            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
-#            alembic upgrade head
-
       - name: Run new version
         id: run_test
         run: |
           docker stop ${{ env.CONTAINER_NAME }} || true && docker rm ${{ env.CONTAINER_NAME }} || true
           docker run \
             --detach \
-            --restart always \
+            --restart on-failure:3 \
             --network=web \
             --env DB_DSN='${{ secrets.DB_DSN }}' \
             --env ROOT_PATH='/dwh_airflow' \
-            --env AUTH_URL='https://api.profcomff.com/auth' \
-            --env GUNICORN_CMD_ARGS='--log-config logging_prod.conf' \
+            --env AUTH_URL='https://api.test.profcomff.com/auth' \
             --name ${{ env.CONTAINER_NAME }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
+          airflow db init \
