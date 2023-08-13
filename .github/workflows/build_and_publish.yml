@@ -31,9 +31,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker Setup Buildx
-        uses: docker/setup-buildx-action@v2.9.1
-
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
@@ -60,10 +57,10 @@ jobs:
     runs-on: [self-hosted, Linux]
     environment:
       name: Testing
-      url: https://api.test.profcomff.com/dwh_airflow
+      url: https://airflow.test.profcomff.com/
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow_test
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow_user:12345@192.168.1.6:5432/airflow_db
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.SQL_ALCHEMY_CONN }}
     permissions:
       packages: read
 
@@ -86,12 +83,11 @@ jobs:
             --detach \
             --restart on-failure:3 \
             --network=web \
-            --env DB_DSN='${{ secrets.DB_DSN }}' \
+            --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN='${{ secrets.DB_DSN }}' \
             --env ROOT_PATH='/dwh_airflow' \
             --env AUTH_URL='https://api.test.profcomff.com/auth' \
             --name ${{ env.CONTAINER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
-          airflow db init \
 
   deploy-production:
     name: Deploy Production
@@ -100,10 +96,10 @@ jobs:
     runs-on: [self-hosted, Linux]
     environment:
       name: Production
-      url: https://api.profcomff.com/dwh_airflow
+      url: https://airflow.profcomff.com/
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow_user:12345@192.168.1.6:5432/airflow_db
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.SQL_ALCHEMY_CONN }}
     permissions:
       packages: read
 
@@ -117,11 +113,10 @@ jobs:
           docker stop ${{ env.CONTAINER_NAME }} || true && docker rm ${{ env.CONTAINER_NAME }} || true
           docker run \
             --detach \
-            --restart on-failure:3 \
+            --restart always \
             --network=web \
-            --env DB_DSN='${{ secrets.DB_DSN }}' \
+            --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN='${{ secrets.SQL_ALCHEMY_CONN }}' \
             --env ROOT_PATH='/dwh_airflow' \
-            --env AUTH_URL='https://api.test.profcomff.com/auth' \
+            --env AUTH_URL='https://api.profcomff.com/auth' \
             --name ${{ env.CONTAINER_NAME }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
-          airflow db init \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
