@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  airflow:
+    build: .
+    ports:
+      - 8080:8080
+    deploy:
+      restart_policy:
+        condition: on-failure
+    environment:
+      - AIRFLOW_ENV=DEV
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres@postgres:5432/postgres
+    volumes:
+      - ./start_local:/start_inc.sh
+
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5432:5432
