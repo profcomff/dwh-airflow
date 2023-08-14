@@ -2,7 +2,8 @@ version: '3.8'
 
 services:
   airflow:
-    build: .
+    image: ghcr.io/profcomff/dwh-airflow:test
+    pull_policy: always
     ports:
       - 8080:8080
     deploy:
