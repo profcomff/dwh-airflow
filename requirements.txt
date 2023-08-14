@@ -10,3 +10,5 @@ apache-airflow
 apache-airflow-providers-common-sql
 apache-airflow-providers-postgres
 google-api-python-client
+auth-lib-profcomff
+profcomff-parse-lib

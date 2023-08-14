@@ -12,7 +12,8 @@ services:
       - AIRFLOW_ENV=DEV
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres@postgres:5432/postgres
     volumes:
-      - ./start_local:/start_inc.sh
+      - ./pipelines:/root/airflow/dags/dwh-pipelines
+      - ./start_local.sh:/start_inc.sh
 
   postgres:
     image: postgres:latest

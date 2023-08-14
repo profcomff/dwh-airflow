@@ -1,4 +1,5 @@
 FROM python:3.11
+ENV AIRFLOW_HOME=/airflow
 ENV AIRFLOW__CORE__LOAD_EXAMPLES=false
 ENV DEBIAN_FRONTEND=noninteractive
 ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor
@@ -13,5 +14,6 @@ RUN apt-get update \
 
 # Run block
 COPY --chmod=+x ./start.sh /start.sh
+
 CMD /start.sh
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 CMD [ "curl", "http://localhost:8080" ]
