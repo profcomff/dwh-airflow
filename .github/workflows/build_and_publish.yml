@@ -57,13 +57,12 @@ jobs:
       name: Testing
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow_test
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.SQL_ALCHEMY_CONN }}
     permissions:
       packages: read
 
     steps:
       - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+        uses: docker/login-action@v4
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -79,10 +78,11 @@ jobs:
           docker run \
             --detach \
             --restart on-failure:3 \
-            --network=web -p 8080:8080 \
+            --network=web \
             --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${{ secrets.SQL_ALCHEMY_CONN }} \
+            --env FERNET_KEY=@{{ secrets.FERNET_KEY }} \
             --name ${{ env.CONTAINER_NAME }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
 
   deploy-production:
     name: Deploy Production
@@ -93,16 +93,22 @@ jobs:
       name: Production
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow
-      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${{ secrets.SQL_ALCHEMY_CONN }}
     permissions:
       packages: read
 
     steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Pull new version
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Run new version
-        id: run_test
+        id: run
         run: |
           docker stop ${{ env.CONTAINER_NAME }} || true && docker rm ${{ env.CONTAINER_NAME }} || true
           docker run \
@@ -110,7 +116,6 @@ jobs:
             --restart always \
             --network=web \
             --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN='${{ secrets.SQL_ALCHEMY_CONN }}' \
-            --env ROOT_PATH='/dwh_airflow' \
-            --env AUTH_URL='https://api.profcomff.com/auth' \
             --name ${{ env.CONTAINER_NAME }} \
+            --env FERNET_KEY=@{{ secrets.FERNET_KEY }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
