@@ -80,7 +80,7 @@ jobs:
             --restart on-failure:3 \
             --network=web \
             --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${{ secrets.SQL_ALCHEMY_CONN }} \
-            --env FERNET_KEY=@{{ secrets.FERNET_KEY }} \
+            --env AIRFLOW__CORE__FERNET_KEY=${{ secrets.FERNET_KEY }} \
             --name ${{ env.CONTAINER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
 
@@ -116,6 +116,6 @@ jobs:
             --restart always \
             --network=web \
             --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN='${{ secrets.SQL_ALCHEMY_CONN }}' \
+            --env AIRFLOW__CORE__FERNET_KEY=${{ secrets.FERNET_KEY }} \
             --name ${{ env.CONTAINER_NAME }} \
-            --env FERNET_KEY=@{{ secrets.FERNET_KEY }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
