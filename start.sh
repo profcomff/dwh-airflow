@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Если папки с дагами не существует, то создай и склонируй туда наш реполиторий с дагами
-[[ -d /root/airflow/dags/dwh-pipelines ]] \
-    || mkdir -p /root/airflow/dags/dwh-pipelines \
-    && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git /root/airflow/dags/dwh-pipelines
+[[ -d /airflow/dags/dwh-pipelines ]] \
+    || mkdir -p /airflow/dags/dwh-pipelines \
+    && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git /airflow/dags/dwh-pipelines
 
 # Инициализируй БД или проведи миграции для обновления
 airflow db init
