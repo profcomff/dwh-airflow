@@ -11,4 +11,4 @@ airflow db init
 # Если файл доопределений существует, выполни его тоже
 [ -f /start_inc.sh ] && source /start_inc.sh
 
-airflow webserver && airflow scheduler
+airflow webserver & airflow scheduler
