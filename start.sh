@@ -6,7 +6,7 @@
     && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git /airflow/dags/dwh-pipelines
 
 # Инициализируй БД или проведи миграции для обновления
-airflow db init
+airflow db migrate
 
 # Если файл доопределений существует, выполни его тоже
 [ -f /start_inc.sh ] && source /start_inc.sh

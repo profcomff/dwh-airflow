@@ -3,12 +3,12 @@ version: '3.8'
 services:
   airflow:
     image: ghcr.io/profcomff/dwh-airflow:test
+    depends_on:
+      - postgres
     pull_policy: always
     ports:
       - 8080:8080
-    deploy:
-      restart_policy:
-        condition: on-failure
+    restart: on-failure:5
     environment:
       - AIRFLOW_ENV=DEV
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres@postgres:5432/postgres
