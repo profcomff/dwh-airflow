@@ -55,6 +55,7 @@ jobs:
     runs-on: [self-hosted, Linux]
     environment:
       name: Testing
+      url: https://airflow.test.profcomff.com
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow_test
     permissions:
@@ -91,6 +92,7 @@ jobs:
     runs-on: [self-hosted, Linux]
     environment:
       name: Production
+      url: https://airflow.profcomff.com
     env:
       CONTAINER_NAME: com_profcomff_dwh_airflow
     permissions:
