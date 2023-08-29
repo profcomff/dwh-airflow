@@ -12,3 +12,4 @@ apache-airflow-providers-postgres
 google-api-python-client
 auth-lib-profcomff
 profcomff-parse-lib
+profcomff-definitions
