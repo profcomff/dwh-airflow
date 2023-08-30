@@ -5,7 +5,7 @@ airflow users create --username admin --password admin --firstname Local --lastn
 
 # Создаем локальное подключение к БД
 airflow connections add \
-    --conn-uri postgresql://postgres@postgres:5432/postgres \
+    --conn-uri postgresql://postgres:postgres@postgres:5432/dwh \
     --conn-description "Основное подключение к БД DWH" \
     posrgres_dwh
 

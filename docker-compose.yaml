@@ -3,6 +3,7 @@ version: '3.8'
 services:
   airflow:
     image: ghcr.io/profcomff/dwh-airflow:test
+    # build: .
     depends_on:
       - postgres
     pull_policy: always
@@ -11,7 +12,7 @@ services:
     restart: on-failure:5
     environment:
       - AIRFLOW_ENV=DEV
-      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://postgres@postgres:5432/postgres
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
     volumes:
       - ./pipelines:/airflow/dags/dwh-pipelines
       - ./start_local.sh:/start_inc.sh
@@ -21,5 +22,10 @@ services:
     restart: always
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
     ports:
       - 5432:5432
+    volumes:
+      - ./start_local.sql:/docker-entrypoint-initdb.d/start_inc.sql
