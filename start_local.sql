@@ -1,3 +1,2 @@
-CREATE USER postgres WITH PASSWORD 'postgres';
+CREATE ROLE postgres WITH PASSWORD 'postgres' LOGIN SUPERUSER;
 CREATE DATABASE postgres WITH OWNER postgres;
-GRANT ALL ON DATABASE postgres TO postgres;
