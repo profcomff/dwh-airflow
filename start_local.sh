@@ -7,7 +7,7 @@ airflow users create --username admin --password admin --firstname Local --lastn
 airflow connections add \
     --conn-uri postgresql://postgres:postgres@postgres:5432/dwh \
     --conn-description "Основное подключение к БД DWH" \
-    posrgres_dwh
+    postgres_dwh
 
 # Создаем локальные переменные с дефолтными или пустыми значениями
 # Системные
