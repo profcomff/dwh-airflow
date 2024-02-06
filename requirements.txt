@@ -5,6 +5,7 @@ gunicorn
 cryptography
 celery
 flower
+flask-session<0.6.0
 psycopg2_binary
 apache-airflow
 apache-airflow-providers-common-sql
