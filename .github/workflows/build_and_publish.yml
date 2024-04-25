@@ -81,11 +81,11 @@ jobs:
             --detach \
             --restart on-failure:3 \
             --network=web \
-            --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=${{ secrets.SQL_ALCHEMY_CONN }} \
-            --env AIRFLOW__CORE__FERNET_KEY=${{ secrets.FERNET_KEY }} \
-            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS: 'content-type, origin, authorization, accept' \
-            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PATCH, OPTIONS, DELETE' \
-            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS: 'https://api.test.profcomff.com' \
+            --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="${{ secrets.SQL_ALCHEMY_CONN }}" \
+            --env AIRFLOW__CORE__FERNET_KEY="${{ secrets.FERNET_KEY }}" \
+            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS="content-type, origin, authorization, accept" \
+            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS="GET, POST, PATCH, OPTIONS, DELETE" \
+            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS="https://api.test.profcomff.com" \
             --name ${{ env.CONTAINER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
 
@@ -121,10 +121,10 @@ jobs:
             --detach \
             --restart always \
             --network=web \
-            --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN='${{ secrets.SQL_ALCHEMY_CONN }}' \
-            --env AIRFLOW__CORE__FERNET_KEY=${{ secrets.FERNET_KEY }} \
-            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS: 'content-type, origin, authorization, accept' \
-            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS: 'GET, POST, PATCH, OPTIONS, DELETE' \
-            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS: 'https://api.profcomff.com' \
+            --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="${{ secrets.SQL_ALCHEMY_CONN }}" \
+            --env AIRFLOW__CORE__FERNET_KEY="${{ secrets.FERNET_KEY }}" \
+            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS="content-type, origin, authorization, accept" \
+            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS="GET, POST, PATCH, OPTIONS, DELETE" \
+            --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS="https://api.profcomff.com" \
             --name ${{ env.CONTAINER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
