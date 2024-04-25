@@ -86,6 +86,9 @@ jobs:
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS="content-type, origin, authorization, accept" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS="GET, POST, PATCH, OPTIONS, DELETE" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS="https://api.test.profcomff.com" \
+            --env AIRFLOW__API__AUTH_BACKENDS="auth_lib.airflow.auth_api" \
+            --env AUTH_URL="https://api.test.profcomff.com/auth/" \
+            --env USERDATA_URL="https://api.test.profcomff.com/userdata/" \
             --name ${{ env.CONTAINER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
 
@@ -126,5 +129,8 @@ jobs:
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS="content-type, origin, authorization, accept" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS="GET, POST, PATCH, OPTIONS, DELETE" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS="https://api.profcomff.com" \
+            --env AIRFLOW__API__AUTH_BACKENDS="auth_lib.airflow.auth_api" \
+            --env AUTH_URL="https://api.profcomff.com/auth/" \
+            --env USERDATA_URL="https://api.profcomff.com/userdata/" \
             --name ${{ env.CONTAINER_NAME }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
