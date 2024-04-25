@@ -86,7 +86,11 @@ jobs:
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS="content-type, origin, authorization, accept" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS="GET, POST, PATCH, OPTIONS, DELETE" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS="https://api.test.profcomff.com" \
-            --env AIRFLOW__API__AUTH_BACKENDS="auth_lib.airflow.auth_api" \
+            --env AIRFLOW__API__AUTH_BACKENDS="auth_lib.airflow.auth_api,airflow.api.auth.backend.session" \
+            --env AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX="True" \
+            --env AIRFLOW__WEBSERVER__ENABLE_SWAGGER_UI="False" \
+            --env AIRFLOW__WEBSERVER__X_FRAME_ENABLED="True" \
+            --env AIRFLOW__WEBSERVER__WARN_DEPLOYMENT_EXPOSURE="False" \
             --env AUTH_URL="https://api.test.profcomff.com/auth/" \
             --env USERDATA_URL="https://api.test.profcomff.com/userdata/" \
             --name ${{ env.CONTAINER_NAME }} \
@@ -129,7 +133,11 @@ jobs:
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_HEADERS="content-type, origin, authorization, accept" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_METHODS="GET, POST, PATCH, OPTIONS, DELETE" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS="https://api.profcomff.com" \
-            --env AIRFLOW__API__AUTH_BACKENDS="auth_lib.airflow.auth_api" \
+            --env AIRFLOW__API__AUTH_BACKENDS="auth_lib.airflow.auth_api,airflow.api.auth.backend.session" \
+            --env AIRFLOW__WEBSERVER__ENABLE_PROXY_FIX="True" \
+            --env AIRFLOW__WEBSERVER__ENABLE_SWAGGER_UI="False" \
+            --env AIRFLOW__WEBSERVER__X_FRAME_ENABLED="True" \
+            --env AIRFLOW__WEBSERVER__WARN_DEPLOYMENT_EXPOSURE="False" \
             --env AUTH_URL="https://api.profcomff.com/auth/" \
             --env USERDATA_URL="https://api.profcomff.com/userdata/" \
             --name ${{ env.CONTAINER_NAME }} \
