@@ -39,3 +39,8 @@ airflow variables set SEMESTER_END_TEST '08/30/2023'
 # Доступ в ЛК hub.mos.ru
 airflow variables set MOSHUB_CLIENT_ID ''
 airflow variables set MOSHUB_CLIENT_SECRET ''
+
+# Чаты в Telegram
+airflow variables set TG_CHAT_DWH -1002132892037  # ID чата "[VU] DWHшники" в Telegram
+airflow variables set TG_CHAT_MANAGERS -1001786188782  # ID чата "РГ прогеров" в Telegram
+airflow variables set TG_CHAT_VU -1001758480664  # ID чата "Viribus Unitis" в Telegram
