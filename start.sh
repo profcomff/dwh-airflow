@@ -11,4 +11,8 @@ airflow db migrate
 # Если файл доопределений существует, выполни его тоже
 [ -f /start_inc.sh ] && source /start_inc.sh
 
+# Удаляем информацию о запущенном вебсервере Airflow
+# При перезагрузках контейнеров этот файл остается, хотя вебсервер не работает
+rm /airflow/airflow-webserver.pid
+
 airflow webserver & airflow scheduler
