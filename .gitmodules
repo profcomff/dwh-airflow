@@ -1,3 +1,4 @@
 [submodule "pipelines"]
 	path = pipelines
 	url = https://github.com/profcomff/dwh-pipelines
+    branch = main
