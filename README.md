@@ -1,5 +1,8 @@
 # dwh-airflow
+
 Airflow build and deploy
+
+[<img src="https://cdn.profcomff.com/easycode/easycode.svg" width="200"></img>](https://easycode.profcomff.com/templates/docker-airflow/workspace?mode=manual)
 
 ## Как начать работу локально
 1. Забери репозиторий себе на компьютер вместе с репозиторием pipelines (потребуется [установить git](https://git-scm.com/book/ru/v2/Введение-Установка-Git)) командой:
