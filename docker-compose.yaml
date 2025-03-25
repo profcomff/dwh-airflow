@@ -13,12 +13,13 @@ services:
     environment:
       - AIRFLOW_ENV=DEV
       - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres:5432/airflow
+      - PYTHONPATH=/airflow/dags/dwh-pipelines
     volumes:
       - ./pipelines:/airflow/dags/dwh-pipelines
       - ./start_local.sh:/start_inc.sh
 
   postgres:
-    image: postgres:latest
+    image: postgres:15
     restart: always
     environment:
       POSTGRES_HOST_AUTH_METHOD: trust
