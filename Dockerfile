@@ -2,6 +2,7 @@ FROM python:3.11
 ENV DEBIAN_FRONTEND=noninteractive
 
 ENV AIRFLOW_HOME=/airflow
+ENV PYTHONPATH=/airflow/dags/dwh-pipelines
 
 ENV AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION=true
 ENV AIRFLOW__CORE__EXECUTOR=LocalExecutor
