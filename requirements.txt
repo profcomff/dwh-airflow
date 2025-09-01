@@ -16,3 +16,4 @@ profcomff-parse-lib
 profcomff-definitions
 virtualenv
 pytest
+asyncpg
