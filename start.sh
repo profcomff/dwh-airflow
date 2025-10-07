@@ -1,9 +1,15 @@
 #!/bin/bash
 
-# Если папки с дагами не существует, то создай и склонируй туда наш реполиторий с дагами
-[[ -d /airflow/dags/dwh-pipelines ]] \
-    || mkdir -p /airflow/dags/dwh-pipelines \
-    && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git /airflow/dags/dwh-pipelines
+pipelines_dir=/airflow/dags/dwh-pipelines
+
+# Если папки с дагами не существует, то создай и склонируй туда наш репозиторий с дагами
+[[ -d ${pipelines-dir} ]] \
+    || mkdir -p ${pipelines-dir} \
+    && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git ${pipelines-dir}
+
+# docker-compose почему-то сохраняет права с хоста на папку dwh-pipelines, но не на её содержимое
+[ $(stat -c %u ${pipelines-dir}) -eq 0 ] \
+	|| chown root:root ${pipelines-dir}
 
 # Инициализируй БД или проведи миграции для обновления
 airflow db migrate
