@@ -7,9 +7,9 @@ pipelines_dir=/airflow/dags/dwh-pipelines
     || mkdir -p "${pipelines_dir}" \
     && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git "${pipelines_dir}"
 
-# docker-compose почему-то сохраняет права с хоста на папку dwh-pipelines, но не на её содержимое
+# docker-compose сохраняет права с хоста на папку dwh-pipelines, но не на её содержимое
 [ $(stat -c %u "${pipelines_dir}") -eq 0 ] \
-	|| chown 50000: "${pipelines_dir}"
+	|| chown 50000:0 "${pipelines_dir}"
 
 # Инициализируй БД или проведи миграции для обновления
 airflow db migrate
