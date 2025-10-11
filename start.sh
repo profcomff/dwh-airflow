@@ -3,13 +3,13 @@
 pipelines_dir=/airflow/dags/dwh-pipelines
 
 # Если папки с дагами не существует, то создай и склонируй туда наш репозиторий с дагами
-[[ -d ${pipelines-dir} ]] \
-    || mkdir -p ${pipelines-dir} \
-    && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git ${pipelines-dir}
+[[ -d "${pipelines_dir}" ]] \
+    || mkdir -p "${pipelines_dir}" \
+    && git clone --recurse-submodules -b main https://github.com/profcomff/dwh-pipelines.git "${pipelines_dir}"
 
-# docker-compose почему-то сохраняет права с хоста на папку dwh-pipelines, но не на её содержимое
-[ $(stat -c %u ${pipelines-dir}) -eq 0 ] \
-	|| chown root:root ${pipelines-dir}
+# docker-compose сохраняет права с хоста на папку dwh-pipelines, но не на её содержимое
+[ $(stat -c %u "${pipelines_dir}") -eq 0 ] \
+	|| chown 50000:0 "${pipelines_dir}"
 
 # Инициализируй БД или проведи миграции для обновления
 airflow db migrate
