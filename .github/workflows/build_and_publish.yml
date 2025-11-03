@@ -85,6 +85,7 @@ jobs:
             --env AIRFLOW__DATABASE__SQL_ALCHEMY_CONN="${{ secrets.SQL_ALCHEMY_CONN }}" \
             --env AIRFLOW__CORE__FERNET_KEY="${{ secrets.FERNET_KEY }}" \
             --env AIRFLOW__API__ACCESS_CONTROL_ALLOW_ORIGINS="https://api.test.profcomff.com" \
+            --env AIRFLOW__CORE__HOSTNAME_CALLABLE=airflow.utils.net.get_host_ip_address \
             --env AUTH_URL="https://api.test.profcomff.com/auth/" \
             --env USERDATA_URL="https://api.test.profcomff.com/userdata/" \
             --name ${{ env.CONTAINER_NAME }} \
