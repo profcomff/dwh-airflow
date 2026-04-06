@@ -23,6 +23,6 @@ Airflow build and deploy
 
     * Адрес: `localhost`
     * Порт: `5432`
-    * База данных: `postgres`
-    * Логин: `postgres`
-    * Без пароля
+    * База данных: `airflow`
+    * Логин: `airflow`
+    * Пароль: `airflow`
